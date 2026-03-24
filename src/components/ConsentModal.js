@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import {
     Modal, View, Text, StyleSheet, TouchableOpacity,
-    ScrollView, Switch, Animated
+    ScrollView, Switch
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -77,7 +77,7 @@ export default function ConsentModal({ visible, onAccept, onCancel }) {
     };
 
     return (
-        <Modal visible={visible} animationType="slide" transparent>
+        <Modal visible={visible} animationType="slide" transparent statusBarTranslucent>
             <View style={s.overlay}>
                 <View style={s.sheet}>
 
