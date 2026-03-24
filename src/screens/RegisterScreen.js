@@ -100,6 +100,7 @@ export default function RegisterScreen({ navigation }) {
     };
 
     return (
+        <>
         <ConsentModal
             visible={showConsent}
             onAccept={handleConsentAccept}
@@ -177,6 +178,7 @@ export default function RegisterScreen({ navigation }) {
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
+        </>
     );
 }
 
