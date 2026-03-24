@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <!-- Fonte Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --hd-dark-blue: #1d4ed8;
+            --hd-header-blue: #2563eb;
+            --hd-glass-blue: #3b82f6;
+            --nano-gold: #D4AF37;
+            --nano-gold-hover: #b4932d;
+            --hd-green: #059669;
+            --text-white: #ffffff;
+            --text-light: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .top-navbar {
+            background: linear-gradient(90deg, #1e3a8a 0%, var(--hd-header-blue) 100%);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links div {
+            width: 80px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-sm-skeleton {
+            width: 90px;
+            height: 35px;
+            border-radius: 6px;
+        }
+
+        .btn-green-skeleton {
+            background-color: var(--hd-green);
+        }
+
+        .btn-white-skeleton {
+            background-color: white;
+        }
+
+        .btn-outline-skeleton {
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: transparent;
+        }
+
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 80px);
+            /* Ocupa exata altura da tela menos o cabeçalho */
+            background-color: #051630;
+            /* Fundo escuro profundo para "emoldurar" a imagem caso ela não seja widescreen */
+            background-image: url('file:///C:/Users/Boas/OneDrive/Documentos/Obsidian%20Vault/Comercial/Campanhas/HDsys_Campaign_Poster.png');
+            background-size: contain;
+            /* Encaixa 100% da imagem sem cortar nada */
+            background-repeat: no-repeat;
+            background-position: center center;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Lighter opacity to let image context show, but solid enough to hold layout */
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(37, 99, 235, 0.3) 50%, rgba(14, 165, 233, 0.2) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .hero-text-block {
+            max-width: 550px;
+            width: 100%;
+        }
+
+        .super-title-skeleton {
+            width: 150px;
+            height: 18px;
+            background: rgba(186, 230, 253, 0.3);
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+
+        .hero-title-skeleton {
+            width: 100%;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .hero-title-skeleton.short {
+            width: 80%;
+            margin-bottom: 40px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 380px;
+        }
+
+        .btn-large-skeleton {
+            width: 100%;
+            height: 55px;
+            border-radius: 8px;
+        }
+
+        .btn-primary-door-skeleton {
+            background-color: var(--text-white);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary-door-skeleton {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .app-stores {
+            margin-top: 35px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .store-badge-skeleton {
+            width: 130px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-mockups {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+        }
+
+        .mockup-img {
+            width: 500px;
+            height: 350px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 16px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mockup-img::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            z-index: 1;
+        }
+
+        .support-ribbon {
+            background-color: #f8fafc;
+            padding: 30px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .phone-block {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .phone-label-skeleton {
+            width: 180px;
+            height: 14px;
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .phone-number-skeleton {
+            width: 250px;
+            height: 36px;
+            background: var(--hd-header-blue);
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        .phone-hours-skeleton {
+            width: 140px;
+            height: 12px;
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .support-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-sm-blue-skeleton {
+            width: 150px;
+            height: 35px;
+            border-radius: 6px;
+            background-color: var(--hd-header-blue);
+            opacity: 0.7;
+        }
+
+        .btn-outline-blue-skeleton {
+            width: 130px;
+            height: 35px;
+            border-radius: 6px;
+            border: 1px solid rgba(37, 99, 235, 0.3);
+        }
+
+        .bottom-section {
+            background: white;
+            padding: 80px 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bottom-title-skeleton {
+            width: 400px;
+            height: 40px;
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .bottom-text-skeleton {
+            width: 600px;
+            height: 16px;
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-navbar">
+        <div class="logo-area">
+            <div class="logo-icon"></div>
+        </div>
+        <div class="nav-links">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="nav-actions">
+            <div class="btn-sm-skeleton btn-green-skeleton"></div>
+            <div class="btn-sm-skeleton btn-white-skeleton"></div>
+            <div class="btn-sm-skeleton btn-outline-skeleton"></div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-text-block">
+                <div class="super-title-skeleton"></div>
+                <div class="hero-title-skeleton"></div>
+                <div class="hero-title-skeleton short"></div>
+
+                <div class="hero-actions">
+                    <div class="btn-large-skeleton btn-primary-door-skeleton"></div>
+                    <div class="btn-large-skeleton btn-secondary-door-skeleton"></div>
+                </div>
+
+                <div class="app-stores">
+                    <div class="store-badge-skeleton"></div>
+                    <div class="store-badge-skeleton"></div>
+                </div>
+            </div>
+
+            <div class="hero-mockups">
+                <div class="mockup-img"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="support-ribbon">
+        <div class="phone-block">
+            <div class="phone-label-skeleton"></div>
+            <div class="phone-number-skeleton"></div>
+            <div class="phone-hours-skeleton"></div>
+        </div>
+        <div class="support-actions">
+            <div class="btn-sm-blue-skeleton"></div>
+            <div class="btn-outline-blue-skeleton"></div>
+        </div>
+    </section>
+
+    <section class="bottom-section">
+        <div class="bottom-title-skeleton"></div>
+        <div class="bottom-text-skeleton"></div>
+    </section>
+
+</body>
+
+</html>

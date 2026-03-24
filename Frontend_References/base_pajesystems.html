@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAJESYSTEMS - Moldura Mestra (Master Frame)</title>
+
+    <!-- Fontes e Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           PAJESYSTEMS: COMPONENTE UNIVERSAL DE MOLDURA (MASTER FRAME)
+           Tema: Nano Banana (Premium Glassmorphism)
+           ========================================================= */
+
+        /* Variáveis Globais Dinâmicas (Dark Mode / Light Mode) */
+        :root {
+            /* Modo Escuro (Cobalt Invertido) / Fundo = mais claro, Moldura = mais escura */
+            --bg-color: #0d2240;
+            --glass-bg: rgba(5, 22, 48, 0.95);
+            /* #051630 */
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --sidebar-color-font: #a3a0b5;
+        }
+
+        body.light-theme {
+            /* Modo Claro (Invertido) / Fundo = Branco Puro, Moldura = Cinza Claro */
+            --bg-color: #ffffff;
+            --glass-bg: rgba(243, 244, 246, 0.95);
+            /* #f3f4f6 */
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --sidebar-color-font: #64748b;
+        }
+
+        /* Estrutura Base */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Roboto', sans-serif;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Efeito Vidro Premium (Glassmorphism) */
+        .glass-panel {
+            background: var(--glass-bg) !important;
+            border: 1px solid var(--glass-border) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-primary) !important;
+            transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+        }
+
+        .glass-panel * {
+            color: inherit;
+        }
+
+        /* Força a herança de cor nos links da Navbar e Sidebar */
+        .navbar-brand h2,
+        .nav-link,
+        .sidebar-category,
+        .link-body-emphasis,
+        .btn-toggle {
+            color: var(--text-primary) !important;
+        }
+
+        /* Controle de Exibição da Logo HDsys por Tema */
+        body.light-theme .theme-dark-logo {
+            display: none !important;
+        }
+
+        body.light-theme .theme-light-logo {
+            display: block !important;
+        }
+
+        .theme-light-logo {
+            display: none;
+        }
+
+        /* Navbar Universal */
+        #nav {
+            z-index: 1050;
+            /* Sempre no topo */
+        }
+
+        .navbar-brand img {
+            border-radius: 4px;
+        }
+
+        .dropdown-menu {
+            position: absolute !important;
+            left: auto !important;
+            right: 0 !important;
+            /* Fixa o dropdown no avatar */
+            z-index: 105;
+        }
+
+        /* Sidebar Direita (Estrutura de Menu Lateral) */
+        .sidebar {
+            position: fixed;
+            top: 71px;
+            /* Espaço para o Navbar */
+            left: 0;
+            width: 250px;
+            height: calc(100vh - 71px);
+            padding: 1rem;
+            transition: width 0.3s ease;
+            overflow-y: scroll;
+            z-index: 1000;
+        }
+
+        /* Remove Scrollbar Visual da Sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .sidebar {
+            scrollbar-width: none;
+        }
+
+        .sidebar-category {
+            font-size: 11px;
+            color: var(--sidebar-color-font) !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Comportamento de Sub-menus (Dropdown Lateral) */
+        .sidebar .btn-toggle-nav li {
+            padding-left: 10px;
+        }
+
+        .sidebar .btn-toggle-nav .link-body-emphasis {
+            margin-left: 10px;
+        }
+
+        .fa-chevron-right {
+            transition: transform 0.3s ease;
+        }
+
+        /* Área do Miolo (Conteúdo Central Injetável) */
+        .main-content {
+            margin-left: 250px;
+            /* Largura da Sidebar */
+            margin-top: 71px;
+            /* Altura da Navbar */
+            padding: 2rem;
+            height: calc(100vh - 71px);
+            overflow-y: scroll;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Responsividade para Telas Menores */
+        @media screen and (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. NAVBAR TOP (Cabeçalho Universal) -->
+    <nav id="nav" class="navbar navbar-expand-lg glass-panel p-0 border-bottom border-light fixed-top">
+        <div class="container-fluid ps-0">
+            <!-- Botão Mobile para exibir a Sidebar -->
+            <button class="btn d-lg-none me-2" type="button"
+                onclick="document.getElementById('sidebar').classList.toggle('show')">
+                <i class="fa-solid fa-bars text-white fs-4"></i>
+            </button>
+
+            <!-- Logo da Instituição (PAJESYSTEMS) -->
+            <a id="brand" class="navbar-brand d-flex align-items-center p-3 ps-4 pe-5 border-end border-light" href="#">
+                <img src="img/logo/hdsys_logo_dark_mode.png" alt="HDsys Premium Logo" class="theme-dark-logo ms-2"
+                    width="160" height="auto">
+                <img src="img/logo/hdsys_logo_light_mode.png" alt="HDsys Premium Logo" class="theme-light-logo ms-2"
+                    width="160" height="auto">
+            </a>
+
+            <!-- Menu Direito -->
+            <div class="d-inline-flex justify-content-end" id="navbarSupportedContent">
+                <ul id="nav-itens" class="navbar-nav mb-2 mb-lg-0 align-items-center d-inline-flex">
+
+                    <p class="nav-link border-start border-light m-0 p-0" style="height:40px"></p>
+
+                    <!-- Avatar e Perfil Dropdown -->
+                    <li class="nav-item dropdown p-lg-0 p-2 mx-3">
+                        <a class="nav-link d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <img src="https://ui-avatars.com/api/?name=Boaz+Avellar&background=0D8ABC&color=fff"
+                                alt="Avatar" class="rounded-circle border border-2 border-primary" width="35"
+                                height="35">
+                            <span class="ms-2 d-none d-md-block fw-bold text-white" id="navRoleLabel">Gestor (Acesso
+                                Total)</span>
+                        </a>
+                        <ul class="dropdown-menu glass-panel shadow-lg mt-2">
+                            <li>
+                                <p class="text-center mb-1 mt-2 text-white fw-bold">Dr. Boaz Avellar</p>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider border-light">
+                            </li>
+                            <li><a class="dropdown-item text-white" href="#"><i
+                                        class="fa-regular fa-circle-user me-2"></i>Perfil SSO</a></li>
+                            <li><a class="dropdown-item text-white" href="#"><i
+                                        class="fa-solid fa-gear me-2"></i>Configuração</a></li>
+                            <li>
+                                <hr class="dropdown-divider border-light">
+                            </li>
+                            <li><a class="dropdown-item text-danger fw-bold" href="#"><i
+                                        class="fa-solid fa-arrow-right-from-bracket me-2"></i>Sair (Logout)</a></li>
+                        </ul>
+                    </li>
+
+                    <p class="nav-link border-start border-light m-0 p-0" style="height:40px"></p>
+
+                    <!-- Toggle Dark/Light Mode -->
+                    <li class="nav-item ms-1 p-lg-0 p-2 mx-3">
+                        <a id="dark-mode-toggle" class="nav-link active" href="#"
+                            onclick="document.body.classList.toggle('light-theme')">
+                            <i class="fa-solid fa-moon fs-4"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. SIDEBAR DIRECIONAL (Menu Lateral Universal) -->
+    <div class="sidebar glass-panel" id="sidebar">
+        <ul class="list-unstyled ps-0">
+            <!-- Ecossistema -->
+            <li class="mb-3 mt-2 text-center">
+                <div class="d-grid gap-2">
+                    <button
+                        class="btn btn-outline-primary btn-sm rounded-pill fw-bold text-white border-0 bg-primary bg-gradient shadow">
+                        <i class="fa-solid fa-layer-group me-2"></i>Módulos PAJE
+                    </button>
+                </div>
+            </li>
+
+            <li class="border-top border-light my-3"></li>
+
+            <li class="mb-1"><span class="fw-bold sidebar-category">HOME</span></li>
+            <li class="mb-1">
+                <a href="#"
+                    class="fw-bold link-body-emphasis d-inline-flex text-decoration-none rounded btn btn-toggle align-items-center w-100 text-start border-0">
+                    <i class="fa-solid fa-house me-3"></i>Início (Painel)
+                </a>
+            </li>
+
+            <li class="border-top border-light my-3"></li>
+
+            <li class="mb-1"><span class="fw-bold sidebar-category">GRÁFICOS & DADOS</span></li>
+
+            <!-- Grupo Colapsável Padrão -->
+            <li class="mb-1">
+                <button
+                    class="fw-bold btn btn-toggle d-flex justify-content-between align-items-center w-100 rounded border-0 collapsed"
+                    data-bs-toggle="collapse" data-bs-target="#patients-collapse">
+                    <span><i class="fa-solid fa-heart-pulse me-2"></i> Saúde</span>
+                    <i class="fa-solid fa-chevron-down fa-2xs"></i>
+                </button>
+                <div class="collapse" id="patients-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-4 mt-2">
+                        <li class="mb-2"><a href="#" class="link-body-emphasis text-decoration-none"><i
+                                    class="fa-solid fa-caret-right fa-2xs me-2"></i>Monitoramento</a></li>
+                        <li class="mb-2"><a href="#" class="link-body-emphasis text-decoration-none"><i
+                                    class="fa-solid fa-caret-right fa-2xs me-2"></i>Análise</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- Gestor Link -->
+            <li class="mb-1 mt-2">
+                <a href="#"
+                    class="fw-bold link-body-emphasis d-inline-flex text-decoration-none rounded btn btn-toggle align-items-center w-100 text-start border-0">
+                    <i class="fa-solid fa-user-tie me-3"></i>Área do Gestor
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 3. CONTEÚDO CENTRAL (Miolo Dinâmico) -->
+    <div class="main-content" id="mainContent">
+        <!-- FRAME DE EXEMPLO -->
+        <div class="container-fluid">
+            <!-- Cabeçalho da Página Específica -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold text-white mb-0">Visão Geral - Template Vazio</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="#" class="text-white-50">Home</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Template</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- Corpo Dinâmico: A injeção ocorre aqui (React, Wix, Angular, Django block content) -->
+            <div class="card glass-panel p-5 text-center shadow-lg border-0"
+                style="min-height: 400px; border-radius: 12px;">
+                <i class="fa-solid fa-code fs-1 text-primary mb-3"></i>
+                <h4 class="fw-bold">O Miolo Principal Renderiza Aqui</h4>
+                <p class="text-secondary">Este Master Frame é completamente isento de bibliotecas pesadas e pode ser
+                    injetado em qualquer linguagem (Node, Python, PHP, Wix). A Navbar e a Sidebar permanecem 100%
+                    consistentes definindo o Walled Garden.</p>
+                <div class="mt-4">
+                    <button class="btn btn-primary px-5 py-2 fw-bold shadow-lg rounded-pill">Injetar Gráficos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Lógica de Toggle das setinhas (Chevron) na Sidebar
+        document.querySelectorAll('.btn-toggle').forEach(btn => {
+            btn.addEventListener('click', function () {
+                let icon = this.querySelector('.fa-chevron-down, .fa-chevron-right');
+                if (icon) {
+                    if (icon.classList.contains('fa-chevron-right')) {
+                        icon.classList.remove('fa-chevron-right');
+                        icon.classList.add('fa-chevron-down');
+                    } else {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

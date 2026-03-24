@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAJE SYSTEMS | Acesso Local</title>
+    <!-- Nano Banana: Usando Tailwind via CDN para prototipagem rápida -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .brand-gradient { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); }
+    </style>
+</head>
+<body class="flex items-center justify-center h-screen">
+
+    <div class="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
+        <!-- Header Visual -->
+        <div class="brand-gradient p-8 text-center">
+            <h1 class="text-3xl font-bold text-white tracking-tight">PAJE SYSTEMS</h1>
+            <p class="text-indigo-100 mt-2 text-sm font-medium">Ambiente de Desenvolvimento Local</p>
+        </div>
+
+        <!-- Formulário -->
+        <div class="p-8">
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Corporativo</label>
+                    <input type="email" id="email" name="email" required 
+                        class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                        value="boaz@pajesystems.local" placeholder="seu.nome@pajesystems.local">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+                    <input type="password" id="password" name="password" required 
+                        class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                        value="master_access_2026" placeholder="••••••••">
+                </div>
+
+                <button type="submit" 
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white brand-gradient hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform hover:-translate-y-0.5 transition duration-200">
+                    ACESSAR SISTEMA
+                </button>
+            </form>
+
+            <!-- Feedback Visual -->
+            <div id="status" class="mt-6 text-center text-sm font-medium hidden p-3 rounded-lg"></div>
+            
+            <!-- Debug Area (apenas para dev) -->
+            <div id="debugArea" class="hidden mt-4">
+                <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Token JWT (Debug)</p>
+                <pre id="debug" class="bg-gray-900 text-green-400 p-3 rounded text-xs overflow-x-auto font-mono"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração do Ambiente Local (Supabase/GoTrue)
+        const GOTRUE_URL = 'http://localhost:9999'; 
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const statusDiv = document.getElementById('status');
+            const debugDiv = document.getElementById('debug');
+            const debugArea = document.getElementById('debugArea');
+
+            statusDiv.className = 'mt-6 text-center text-sm font-medium p-3 rounded-lg bg-blue-50 text-blue-700 animate-pulse';
+            statusDiv.textContent = 'Autenticando com Einstein (Local)...';
+            statusDiv.classList.remove('hidden');
+            debugArea.classList.add('hidden');
+
+            try {
+                // Chamada direta à API do Supabase Auth (GoTrue)
+                const response = await fetch(`${GOTRUE_URL}/auth/v1/token?grant_type=password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error_description || data.msg || 'Falha na autenticação');
+
+                // Sucesso
+                statusDiv.className = 'mt-6 text-center text-sm font-medium p-3 rounded-lg bg-green-50 text-green-700';
+                statusDiv.innerHTML = '✓ Acesso Autorizado! Bem-vindo, <strong>' + (data.user?.email || 'Usuário') + '</strong>';
+                
+                debugDiv.textContent = JSON.stringify(data, null, 2);
+                debugArea.classList.remove('hidden');
+
+            } catch (error) {
+                // Erro
+                statusDiv.className = 'mt-6 text-center text-sm font-medium p-3 rounded-lg bg-red-50 text-red-700';
+                statusDiv.textContent = `⛔ Erro: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-native/all"
+    ],
+    "plugins": [
+        "react",
+        "react-native"
+    ],
+    "env": {
+        "react-native/react-native": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "rules": {
+        "react/prop-types": "off",
+        "react-native/no-inline-styles": "off",
+        "react-native/no-unused-styles": "warn",
+        "react-native/split-platform-components": "off",
+        "react-native/no-raw-text": "off",
+        "no-unused-vars": "warn",
+        "no-console": "off",
+        "react/react-in-jsx-scope": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

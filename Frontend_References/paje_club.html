@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAJEclub | Área de Membros</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        club: {
+                            primary: '#4f46e5', // Indigo
+                            secondary: '#7c3aed', // Purple
+                            bg: '#f8fafc',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .club-gradient { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); }
+        .club-text-gradient { 
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-club-bg text-gray-800">
+
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-2xl club-text-gradient tracking-tight">PAJEclub</span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-gray-500 hover:text-club-primary transition"><i class="ph ph-house text-2xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-club-primary transition"><i class="ph ph-chat-circle-text text-2xl"></i></a>
+                    <div class="relative">
+                        <img class="h-8 w-8 rounded-full ring-2 ring-purple-100 cursor-pointer" src="https://ui-avatars.com/api/?name=Membro+Vip&background=7c3aed&color=fff" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Feed Layout -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Sidebar (Profile) -->
+            <div class="lg:col-span-3 hidden lg:block">
+                <div class="bg-white rounded-2xl shadow-sm p-6 text-center sticky top-24">
+                    <div class="w-20 h-20 mx-auto rounded-full club-gradient p-1 mb-4">
+                        <img class="w-full h-full rounded-full border-2 border-white" src="https://ui-avatars.com/api/?name=Membro+Vip&background=fff&color=7c3aed" alt="">
+                    </div>
+                    <h2 class="font-bold text-gray-900">Membro VIP</h2>
+                    <p class="text-sm text-gray-500 mb-4">Desde 2024</p>
+                    <div class="flex justify-center gap-2 mb-6">
+                        <span class="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-md font-medium">Premium</span>
+                        <span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium">Beta Tester</span>
+                    </div>
+                    <div class="border-t border-gray-100 pt-4 text-left">
+                        <p class="text-xs font-semibold text-gray-400 uppercase mb-2">Seus Pontos</p>
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-xl text-gray-800">1.250</span>
+                            <i class="ph ph-trophy text-yellow-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Feed -->
+            <div class="lg:col-span-6 space-y-6">
+                <!-- Create Post / Welcome -->
+                <div class="bg-white rounded-2xl shadow-sm p-6">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-2">Olá, Membro! 👋</h1>
+                    <p class="text-gray-600">Confira as novidades exclusivas da semana.</p>
+                </div>
+
+                <!-- Content Card -->
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <div class="h-48 bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="w-full h-full object-cover" alt="Medical Tech">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-gray-800">Novo Artigo</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Avanços na Telemedicina com IA</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-2">Como os novos algoritmos de Deep Learning estão transformando o diagnóstico precoce em clínicas rurais...</p>
+                        <a href="#" class="text-club-primary font-semibold hover:underline">Ler completo</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar (Events/Benefits) -->
+            <div class="lg:col-span-3 hidden lg:block">
+                <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
+                    <h3 class="font-bold text-gray-900 mb-4">Próximos Eventos</h3>
+                    <div class="space-y-4">
+                        <div class="flex gap-3 items-start">
+                            <div class="bg-indigo-50 text-indigo-600 rounded-lg w-10 h-10 flex items-center justify-center flex-shrink-0 font-bold text-xs">05<br>MAR</div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Webinar: BIOsys</p>
+                                <p class="text-xs text-gray-500">19:00h - Online</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

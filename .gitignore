@@ -1,0 +1,15 @@
+node_modules/
+.expo/
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+.pnp.*
+.vscode/
+build/
+android/
+ios/
+dist/
+*.log
+.env
+build_log.txt
+SSO-PAJESYSTEMS/
