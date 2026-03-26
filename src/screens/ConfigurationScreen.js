@@ -80,7 +80,7 @@ export default function ConfigurationScreen({ navigation }) {
                     icon="shield-checkmark-outline"
                     label="SSO Premium / Associados"
                     sublabel="Acesso avançado PAJE club"
-                    onPress={() => navigation.navigate('Store')}
+                    onPress={() => navigation.navigate('Loja', { screen: 'Store' })}
                     color={T.text.gold}
                     T={T} S={S}
                 />
