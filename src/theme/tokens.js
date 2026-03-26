@@ -164,4 +164,4 @@ export const themes = {
     light60:   buildTheme('light', 'a60'),
 };
 
-export type ThemeKey = keyof typeof themes;
+// Chaves válidas: 'dark' | 'light' | 'dark60' | 'light60'
