@@ -1,8 +1,9 @@
 import { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
+import { useTheme } from '../theme/ThemeContext';
 
 const C = {
     bg:         '#0A1325',
@@ -30,6 +31,7 @@ const MenuItem = ({ icon, label, sublabel, onPress, color }) => (
 
 export default function ConfigurationScreen({ navigation }) {
     const { user, logout } = useContext(AuthContext);
+    const { T, setMode, setScale } = useTheme();
     const displayName = user?.firstName || user?.name || user?.username || 'Paciente';
     const displayEmail = user?.email || user?.username || '';
 
@@ -89,6 +91,43 @@ export default function ConfigurationScreen({ navigation }) {
                     onPress={() => navigation.navigate('Store')}
                     color={C.gold}
                 />
+            </View>
+
+            {/* Aparência */}
+            <View style={styles.card}>
+                <Text style={styles.sectionLabel}>APARÊNCIA</Text>
+
+                <View style={styles.toggleItem}>
+                    <View style={[styles.menuIcon, { backgroundColor: C.blue + '22' }]}>
+                        <Ionicons name={T.isDark ? 'moon-outline' : 'sunny-outline'} size={22} color={C.blue} />
+                    </View>
+                    <View style={styles.menuBody}>
+                        <Text style={styles.menuLabel}>{T.isDark ? 'Tema Escuro' : 'Tema Claro'}</Text>
+                        <Text style={styles.menuSub}>Alterna entre fundo escuro e claro</Text>
+                    </View>
+                    <Switch
+                        value={T.isDark}
+                        onValueChange={v => setMode(v ? 'dark' : 'light')}
+                        trackColor={{ false: '#CBD5E1', true: C.blue }}
+                        thumbColor={T.isDark ? C.gold : '#f4f3f4'}
+                    />
+                </View>
+
+                <View style={styles.toggleItem}>
+                    <View style={[styles.menuIcon, { backgroundColor: C.gold + '22' }]}>
+                        <Ionicons name="text-outline" size={22} color={C.gold} />
+                    </View>
+                    <View style={styles.menuBody}>
+                        <Text style={styles.menuLabel}>Modo Acessibilidade 60+</Text>
+                        <Text style={styles.menuSub}>Fonte maior, botões ampliados, alto contraste</Text>
+                    </View>
+                    <Switch
+                        value={T.is60}
+                        onValueChange={v => setScale(v ? 'a60' : 'normal')}
+                        trackColor={{ false: '#CBD5E1', true: C.gold }}
+                        thumbColor={T.is60 ? C.gold : '#f4f3f4'}
+                    />
+                </View>
             </View>
 
             <View style={styles.card}>
@@ -151,6 +190,11 @@ const styles = StyleSheet.create({
     menuItem: {
         flexDirection: 'row', alignItems: 'center',
         paddingHorizontal: 16, paddingVertical: 14,
+        borderTopWidth: 1, borderTopColor: C.border,
+    },
+    toggleItem: {
+        flexDirection: 'row', alignItems: 'center',
+        paddingHorizontal: 16, paddingVertical: 12,
         borderTopWidth: 1, borderTopColor: C.border,
     },
     menuIcon: {
