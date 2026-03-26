@@ -5,29 +5,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
-
-// HDsys-V5 Design System — Nano Banana Dark Theme
-const C = {
-    pageBg:      '#0A1325',
-    cardBg:      '#162136',
-    cardBorder:  '#1E293B',
-    headerBg:    '#0A1325',
-    label:       '#CBD5E1',   // slate-300
-    inputBg:     '#0A1325',
-    inputBorder: '#1E293B',
-    inputText:   '#E2E8F0',   // slate-200
-    placeholder: '#475569',   // slate-600
-    gold:        '#D4AF37',
-    btnPrimary:  '#1E3A8A',   // blue-800
-    btnPrimaryHover: '#1D4ED8',
-    btnSso:      '#0A1325',
-    ssoText:     '#CBD5E1',
-    dividerText: '#64748B',   // slate-500
-    linkText:    '#60A5FA',   // blue-400
-    errorBg:     '#FEF2F2',
-    errorText:   '#B91C1C',
-    errorBorder: '#FECACA',
-};
+import { useTheme } from '../theme/ThemeContext';
 
 export default function LoginScreen({ navigation }) {
     const [username, setUsername] = useState('');
@@ -36,6 +14,8 @@ export default function LoginScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
 
     const { login } = useContext(AuthContext);
+    const { T } = useTheme();
+    const S = makeStyles(T);
 
     const handleLogin = async () => {
         if (!username || !password) {
@@ -65,85 +45,84 @@ export default function LoginScreen({ navigation }) {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={styles.root}
+            style={S.root}
         >
             <ScrollView
-                contentContainerStyle={styles.scroll}
+                contentContainerStyle={S.scroll}
                 keyboardShouldPersistTaps="handled"
             >
-                {/* Card */}
-                <View style={styles.card}>
+                <View style={S.card}>
 
                     {/* Header — logos */}
-                    <View style={styles.cardHeader}>
+                    <View style={S.cardHeader}>
                         <Image
                             source={require('../../assets/paje-headdress.png')}
-                            style={styles.headdress}
+                            style={S.headdress}
                             resizeMode="contain"
                         />
                         <Image
                             source={require('../../assets/paje_systems_light_text.png')}
-                            style={styles.logoText}
+                            style={S.logoText}
                             resizeMode="contain"
                         />
                     </View>
 
-                    {/* Formulário */}
-                    <View style={styles.formArea}>
+                    <View style={S.formArea}>
 
-                        {/* Campo: Email / Usuário */}
-                        <View style={styles.fieldWrap}>
-                            <Text style={styles.label}>Email / Usuário</Text>
-                            <View style={styles.inputRow}>
-                                <Ionicons name="person" size={18} color={C.dividerText} style={styles.inputIcon} />
+                        {/* Email / Usuário */}
+                        <View style={S.fieldWrap}>
+                            <Text style={S.label}>Email / Usuário</Text>
+                            <View style={S.inputRow}>
+                                <Ionicons name="person" size={T.is60 ? 20 : 18} color={T.text.secondary} style={S.inputIcon} />
                                 <TextInput
-                                    style={styles.textInput}
+                                    style={S.textInput}
                                     value={username}
                                     onChangeText={setUsername}
                                     placeholder="usuario@email.com"
-                                    placeholderTextColor={C.placeholder}
+                                    placeholderTextColor={T.text.disabled}
                                     autoCapitalize="none"
                                     keyboardType="email-address"
                                 />
                             </View>
                         </View>
 
-                        {/* Campo: Senha */}
-                        <View style={styles.fieldWrap}>
-                            <Text style={styles.label}>Senha</Text>
-                            <View style={styles.inputRow}>
-                                <Ionicons name="lock-closed" size={18} color={C.dividerText} style={styles.inputIcon} />
+                        {/* Senha */}
+                        <View style={S.fieldWrap}>
+                            <Text style={S.label}>Senha</Text>
+                            <View style={S.inputRow}>
+                                <Ionicons name="lock-closed" size={T.is60 ? 20 : 18} color={T.text.secondary} style={S.inputIcon} />
                                 <TextInput
-                                    style={[styles.textInput, { flex: 1 }]}
+                                    style={[S.textInput, { flex: 1 }]}
                                     value={password}
                                     onChangeText={setPassword}
                                     placeholder="••••••••"
-                                    placeholderTextColor={C.placeholder}
+                                    placeholderTextColor={T.text.disabled}
                                     secureTextEntry={!showPassword}
                                     autoCapitalize="none"
                                 />
                                 <TouchableOpacity
                                     onPress={() => setShowPassword(!showPassword)}
-                                    style={styles.eyeBtn}
+                                    style={S.eyeBtn}
+                                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                                 >
                                     <Ionicons
                                         name={showPassword ? 'eye-off' : 'eye'}
-                                        size={18}
-                                        color={C.dividerText}
+                                        size={T.is60 ? 20 : 18}
+                                        color={T.text.secondary}
                                     />
                                 </TouchableOpacity>
                             </View>
                         </View>
 
-                        {/* PORTA A — Acesso ao PAJE club */}
+                        {/* Botão principal */}
                         <TouchableOpacity
                             onPress={handleLogin}
                             disabled={loading}
-                            style={styles.btnPrimary}
+                            style={[S.btnPrimary, loading && { opacity: 0.6 }]}
                             activeOpacity={0.85}
                         >
-                            <Ionicons name="log-in" size={18} color="#fff" style={{ marginRight: 8 }} />
-                            <Text style={styles.btnPrimaryText}>
+                            <Ionicons name="log-in" size={T.is60 ? 20 : 18} color="#fff" style={{ marginRight: 8 }} />
+                            <Text style={S.btnPrimaryText}>
                                 {loading ? 'Autenticando...' : 'Acesso ao PAJE club'}
                             </Text>
                         </TouchableOpacity>
@@ -151,29 +130,29 @@ export default function LoginScreen({ navigation }) {
                         {/* Link Registro */}
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Register')}
-                            style={styles.linkRow}
+                            style={S.linkRow}
                         >
-                            <Text style={styles.linkText}>
+                            <Text style={S.linkText}>
                                 Ainda não tem conta?{' '}
-                                <Text style={styles.linkBold}>Criar Grátis</Text>
+                                <Text style={S.linkBold}>Criar Grátis</Text>
                             </Text>
                         </TouchableOpacity>
 
                         {/* Divisor */}
-                        <View style={styles.divider}>
-                            <View style={styles.dividerLine} />
-                            <Text style={styles.dividerLabel}>Acesso Alternativo</Text>
-                            <View style={styles.dividerLine} />
+                        <View style={S.divider}>
+                            <View style={S.dividerLine} />
+                            <Text style={S.dividerLabel}>Acesso Alternativo</Text>
+                            <View style={S.dividerLine} />
                         </View>
 
-                        {/* PORTA B — SSO Premium */}
+                        {/* SSO Premium */}
                         <TouchableOpacity
                             onPress={handleSSOPremium}
-                            style={styles.btnSso}
+                            style={S.btnSso}
                             activeOpacity={0.85}
                         >
-                            <Ionicons name="shield-checkmark" size={18} color={C.gold} style={{ marginRight: 8 }} />
-                            <Text style={styles.btnSsoText}>SSO Premium / Associados PAJE club</Text>
+                            <Ionicons name="shield-checkmark" size={T.is60 ? 20 : 18} color={T.text.gold} style={{ marginRight: 8 }} />
+                            <Text style={S.btnSsoText}>SSO Premium / Associados PAJE club</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -183,46 +162,45 @@ export default function LoginScreen({ navigation }) {
     );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (T) => StyleSheet.create({
     root: {
         flex: 1,
-        backgroundColor: C.pageBg,
+        backgroundColor: T.bg,
     },
     scroll: {
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 32,
+        paddingHorizontal: T.spacing.md,
+        paddingVertical: T.spacing.xl,
     },
     card: {
         width: '100%',
         maxWidth: 448,
-        backgroundColor: C.cardBg,
-        borderRadius: 12,
+        backgroundColor: T.surface,
+        borderRadius: T.radius.lg,
         borderWidth: 1,
-        borderColor: C.cardBorder,
+        borderColor: T.border,
         overflow: 'hidden',
-        shadowColor: '#000',
+        shadowColor: T.shadow,
         shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.4,
+        shadowOpacity: T.isDark ? 0.4 : 0.12,
         shadowRadius: 20,
         elevation: 12,
     },
 
-    /* Header */
     cardHeader: {
-        backgroundColor: C.headerBg,
+        backgroundColor: T.bgSubtle,
         borderBottomWidth: 1,
-        borderBottomColor: C.cardBorder,
-        paddingVertical: 32,
+        borderBottomColor: T.border,
+        paddingVertical: T.spacing.xl,
         alignItems: 'center',
         justifyContent: 'center',
     },
     headdress: {
-        width: 80,
-        height: 80,
-        marginBottom: 12,
+        width: T.is60 ? 96 : 80,
+        height: T.is60 ? 96 : 80,
+        marginBottom: T.spacing.sm,
     },
     logoText: {
         width: 160,
@@ -230,104 +208,101 @@ const styles = StyleSheet.create({
         opacity: 0.9,
     },
 
-    /* Formulário */
     formArea: {
-        padding: 32,
+        padding: T.spacing.xl,
     },
     fieldWrap: {
-        marginBottom: 20,
+        marginBottom: T.spacing.lg,
     },
     label: {
-        fontSize: 13,
+        fontSize: T.font.sm,
         fontWeight: '500',
-        color: C.label,
-        marginBottom: 6,
+        color: T.text.primary,
+        marginBottom: T.spacing.xs + 2,
     },
     inputRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: C.inputBg,
+        backgroundColor: T.bg,
         borderWidth: 1,
-        borderColor: C.inputBorder,
-        borderRadius: 8,
-        paddingHorizontal: 12,
-        height: 48,
+        borderColor: T.border,
+        borderRadius: T.radius.md,
+        paddingHorizontal: T.spacing.sm + 4,
+        height: T.touch.btn,
     },
     inputIcon: {
-        marginRight: 10,
+        marginRight: T.spacing.sm + 2,
     },
     textInput: {
         flex: 1,
-        color: C.inputText,
-        fontSize: 15,
+        color: T.text.primary,
+        fontSize: T.font.base,
         height: '100%',
     },
     eyeBtn: {
-        paddingLeft: 8,
+        paddingLeft: T.spacing.sm,
     },
 
-    /* PORTA A */
     btnPrimary: {
-        backgroundColor: C.btnPrimary,
+        backgroundColor: T.action.primary,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 14,
-        borderRadius: 8,
-        marginTop: 8,
+        height: T.touch.btn,
+        borderRadius: T.radius.md,
+        marginTop: T.spacing.sm,
     },
     btnPrimaryText: {
-        color: '#fff',
-        fontSize: 14,
+        color: T.action.primaryText,
+        fontSize: T.font.base,
         fontWeight: 'bold',
     },
 
-    /* Link */
     linkRow: {
-        marginTop: 16,
+        marginTop: T.spacing.md,
         alignItems: 'center',
+        minHeight: T.touch.min,
+        justifyContent: 'center',
     },
     linkText: {
-        fontSize: 13,
-        color: C.linkText,
+        fontSize: T.font.sm,
+        color: T.text.link,
     },
     linkBold: {
         fontWeight: '600',
     },
 
-    /* Divisor */
     divider: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: 24,
+        marginVertical: T.spacing.lg,
     },
     dividerLine: {
         flex: 1,
         height: 1,
-        backgroundColor: C.cardBorder,
+        backgroundColor: T.border,
     },
     dividerLabel: {
-        marginHorizontal: 12,
-        fontSize: 11,
-        color: C.dividerText,
+        marginHorizontal: T.spacing.sm + 4,
+        fontSize: T.font.xs,
+        color: T.text.secondary,
         textTransform: 'uppercase',
         fontWeight: '500',
     },
 
-    /* PORTA B */
     btnSso: {
-        backgroundColor: C.btnSso,
+        backgroundColor: T.surface,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 14,
-        borderRadius: 8,
+        height: T.touch.btn,
+        borderRadius: T.radius.md,
         borderWidth: 1,
-        borderColor: C.cardBorder,
+        borderColor: T.border,
     },
     btnSsoText: {
-        color: C.ssoText,
-        fontSize: 14,
+        color: T.text.primary,
+        fontSize: T.font.base,
         fontWeight: 'bold',
     },
 });
