@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useContext } from 'react';
 import {
     View, Text, StyleSheet, Alert, ScrollView,
@@ -116,19 +117,23 @@ export default function AddMeasurementScreen({ navigation }) {
             });
 
             // 2. Envia para API Django
+            const userId = user?.email || user?.username || '';
             try {
                 await api.post('/api/submit/', {
-                    patient_datetime: formatDisplay(date),
-                    patient_pas:  pasF.toString(),
-                    patient_pad:  padF.toString(),
-                    patient_pam:  pam.toString(),
+                    patient_datetime:   formatDisplay(date),
+                    patient_pas:        pasF.toString(),
+                    patient_pad:        padF.toString(),
+                    patient_pam:        pam.toString(),
                     patient_heart_rate: heartRate || '',
-                    user_id: user?.username || 'anonymous',
+                    user_id:            userId,
                 });
-            } catch { /* offline — dado seguro no SQLite */ }
+            } catch (apiErr) {
+                // Dado seguro no SQLite — loga o erro para diagnóstico
+                console.warn('API submit falhou:', apiErr?.response?.status, apiErr?.response?.data || apiErr?.message);
+            }
 
             // 3. Sync Supabase em background
-            syncPendingMeasurements(user?.username || 'anonymous').catch(() => {});
+            syncPendingMeasurements(userId).catch(() => {});
 
             Alert.alert(
                 'Registrado!',

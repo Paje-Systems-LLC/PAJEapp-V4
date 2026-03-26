@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import api from '../services/api';
+import { getRecentMeasurements } from '../services/hdsysFreeDB';
 import GaugeChart, { getPAMClass, getPAMMessage } from '../components/hdsys/GaugeChart';
 
 // HDsys-V5 Nano Banana Dark Theme
@@ -35,14 +36,49 @@ export default function DashboardScreen({ navigation }) {
     const [refreshing, setRefreshing]   = useState(false);
     const [allData, setAllData]         = useState([]);
     const [period, setPeriod]           = useState('Semanal');
+    const [dataSource, setDataSource]   = useState('api'); // 'api' | 'local'
 
     const fetchData = useCallback(async () => {
         try {
             const res = await api.get('/api/history/');
             const results = res.data.results || res.data;
-            setAllData(Array.isArray(results) ? results : []);
-        } catch {
-            setAllData([]);
+            const data = Array.isArray(results) ? results : [];
+            setAllData(data);
+            setDataSource('api');
+
+            // Se API retornou vazio, usa SQLite local como fallback
+            if (data.length === 0) {
+                const local = await getRecentMeasurements(50);
+                if (local && local.length > 0) {
+                    // Normaliza campos do SQLite para o formato da API
+                    setAllData(local.map(m => ({
+                        patient_pas:      m.pas,
+                        patient_pad:      m.pad,
+                        patient_pam:      m.pam,
+                        patient_heart_rate: m.heart_rate,
+                        patient_datetime: m.measured_at,
+                        created_at:       m.measured_at,
+                    })));
+                    setDataSource('local');
+                }
+            }
+        } catch (err) {
+            console.warn('Dashboard API falhou:', err?.response?.status, err?.message);
+            // Fallback total para SQLite local
+            try {
+                const local = await getRecentMeasurements(50);
+                setAllData((local || []).map(m => ({
+                    patient_pas:      m.pas,
+                    patient_pad:      m.pad,
+                    patient_pam:      m.pam,
+                    patient_heart_rate: m.heart_rate,
+                    patient_datetime: m.measured_at,
+                    created_at:       m.measured_at,
+                })));
+                setDataSource('local');
+            } catch {
+                setAllData([]);
+            }
         } finally {
             setLoading(false);
             setRefreshing(false);
@@ -97,6 +133,9 @@ export default function DashboardScreen({ navigation }) {
                     <Text style={styles.headerTitle}>Projeto HDsys</Text>
                     <Text style={styles.headerSub}>Boas vindas, {displayName}!</Text>
                     <Text style={styles.headerCaption}>Monitoramento da Pressão Arterial Média - PAM</Text>
+                    {dataSource === 'local' && (
+                        <Text style={styles.offlineBadge}>⚡ Dados locais (sem conexão com servidor)</Text>
+                    )}
                 </View>
                 <TouchableOpacity
                     style={styles.gearBtn}
@@ -240,7 +279,8 @@ const styles = StyleSheet.create({
     },
     headerTitle: { fontSize: 20, fontWeight: 'bold', color: C.textPrimary, letterSpacing: 0.5 },
     headerSub:   { fontSize: 14, color: C.accent, marginTop: 2 },
-    headerCaption: { fontSize: 11, color: C.textSecond, marginTop: 3 },
+    headerCaption:  { fontSize: 11, color: C.textSecond, marginTop: 3 },
+    offlineBadge:   { fontSize: 10, color: '#FBBF24', marginTop: 4, fontWeight: '600' },
     gearBtn: { padding: 6, marginTop: 4 },
 
     /* ── Container A ── */

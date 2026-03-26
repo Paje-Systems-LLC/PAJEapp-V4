@@ -17,9 +17,20 @@ export const AuthProvider = ({ children }) => {
                 if (token) {
                     api.defaults.headers.Authorization = `Bearer ${token}`;
                     setSessionToken(token);
-                    setUser({ token });
+                    // Decodifica JWT para restaurar dados do usuário sem nova chamada de rede
+                    try {
+                        const payload = JSON.parse(atob(token.split('.')[1]));
+                        setUser({
+                            token,
+                            email:     payload.email    || payload.sub || '',
+                            username:  payload.username || payload.email || payload.sub || '',
+                            firstName: payload.first_name || payload.given_name || '',
+                            lastName:  payload.last_name  || payload.family_name || '',
+                        });
+                    } catch {
+                        setUser({ token });
+                    }
                 }
-                // Sem token → usuário vai para tela de login (sem bypass)
             } catch (e) {
                 console.error("Token restoration failed", e);
             } finally {
@@ -34,7 +45,13 @@ export const AuthProvider = ({ children }) => {
         if (result.success) {
             const { access_token, user: ssoUser } = result.data;
             setSessionToken(access_token);
-            setUser({ token: access_token, email: ssoUser?.email || email });
+            setUser({
+                token:     access_token,
+                email:     ssoUser?.email      || email,
+                username:  ssoUser?.username   || ssoUser?.email || email,
+                firstName: ssoUser?.first_name || ssoUser?.given_name  || '',
+                lastName:  ssoUser?.last_name  || ssoUser?.family_name || '',
+            });
             api.defaults.headers.Authorization = `Bearer ${access_token}`;
             return { success: true };
         }
